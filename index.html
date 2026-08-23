@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>سنجاق | Sanjagh</title>
+  <meta name="description" content="سنجاق — اتصال دارایی‌های صنعتی شمال‌غرب ایران و منطقه آزاد ارس" />
+  <meta name="theme-color" content="#0a0a0a" />
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" href="favicon.png" sizes="32x32" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{--bg:#0a0a0a;--gold:#c9a962;--gold-soft:#d4b87a;--gold-dim:rgba(201,169,98,.35);--text:#e8e0d0;--text-muted:#9a917e}
+    html,body{height:100%;background-color:var(--bg);color:var(--text);font-family:'Inter',system-ui,-apple-system,sans-serif;overflow-x:hidden}
+    body{min-height:100vh;position:relative;background-image:linear-gradient(135deg,transparent 0%,transparent 45%,rgba(201,169,98,.03) 50%,transparent 55%,transparent 100%),linear-gradient(45deg,transparent 0%,transparent 45%,rgba(201,169,98,.02) 50%,transparent 55%,transparent 100%);background-size:80px 80px}
+
+    .corner{position:fixed;width:48px;height:48px;border-color:var(--gold-dim);border-style:solid;opacity:.6;pointer-events:none;z-index:100}
+    .corner-tl{top:28px;left:28px;border-width:1px 0 0 1px}.corner-tr{top:28px;right:28px;border-width:1px 1px 0 0}
+    .corner-bl{bottom:28px;left:28px;border-width:0 0 1px 1px}.corner-br{bottom:28px;right:28px;border-width:0 1px 1px 0}
+
+    .section{display:none;min-height:100vh;width:100%;padding:40px 20px 110px;flex-direction:column;align-items:center;justify-content:center}
+    .section.active{display:flex}
+
+    /* INTRO */
+    #intro{position:fixed;inset:0;z-index:50;background:var(--bg);text-align:center;padding:40px 24px}
+    #intro.hidden{opacity:0;visibility:hidden;pointer-events:none;transition:opacity 1.1s ease,visibility 1.1s}
+    .intro-line{font-family:'Cormorant Garamond',serif;color:#e0c98a;opacity:0;transform:translateY(8px);margin:.4rem 0;min-height:1.4em;letter-spacing:.04em;text-shadow:0 0 18px rgba(201,169,98,.25)}
+    .intro-line.visible{opacity:1;transform:translateY(0);transition:opacity .5s ease,transform .5s ease}
+    .intro-name{font-size:clamp(2.3rem,7.2vw,3.5rem);font-weight:400;letter-spacing:.22em;margin-bottom:.7rem;color:#f0d78a}
+    .intro-title{font-size:clamp(1rem,2.9vw,1.2rem);font-weight:300;color:#e8e0d0;letter-spacing:.08em}
+    .intro-services{font-size:clamp(.9rem,2.5vw,1.05rem);font-weight:300;color:#d4b87a;letter-spacing:.06em;margin-top:.55rem}
+    .intro-tagline{font-size:clamp(.85rem,2.3vw,1rem);font-weight:300;color:#cbbf9e;letter-spacing:.05em;margin-top:1rem;max-width:440px;line-height:1.65;margin-left:auto;margin-right:auto}
+    .intro-contact{font-size:clamp(.8rem,2.1vw,.92rem);font-weight:300;color:#b8ae93;letter-spacing:.04em;margin-top:1.3rem;line-height:1.7}
+    .intro-divider{width:52px;height:1px;background:rgba(201,169,98,.55);margin:1rem auto;opacity:0;transition:opacity .6s ease}
+    .intro-divider.visible{opacity:1}
+    .intro-symbol{width:180px;height:180px;opacity:.09;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+    .intro-symbol svg{width:100%;height:100%}
+
+    /* HOME */
+    #home{text-align:center}
+    .symbol-top{width:52px;height:52px;margin-bottom:1.1rem;opacity:.55}
+    .symbol-top svg{width:100%;height:100%}
+    .greeting-hi{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(3.2rem,9.5vw,5.2rem);letter-spacing:.18em;color:var(--gold);margin-bottom:.9rem;text-shadow:0 0 40px rgba(201,169,98,.15)}
+    .country-welcome{font-size:.9rem;font-weight:300;letter-spacing:.12em;color:var(--text-muted);margin-bottom:1.8rem;min-height:1.3em}
+    .buttons-box{width:100%;max-width:420px;display:flex;flex-direction:column;gap:1rem}
+    .role-btn{width:100%;padding:1.15rem 1.5rem;font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:400;letter-spacing:.08em;color:var(--gold-soft);background:rgba(255,255,255,.03);border:1px solid rgba(201,169,98,.28);border-radius:40px;cursor:pointer;transition:all .35s ease}
+    .role-btn:hover{background:rgba(201,169,98,.12);border-color:rgba(201,169,98,.55);color:#f0d78a;box-shadow:0 0 0 4px rgba(201,169,98,.08);transform:translateY(-2px)}
+
+    /* THANK YOU */
+    .ty-line{font-family:'Cormorant Garamond',serif;font-weight:300;color:#e0c98a;opacity:0;transform:translateY(10px);margin:.7rem 0;line-height:1.85;letter-spacing:.02em;min-height:1.5em}
+    .ty-line.visible{opacity:1;transform:translateY(0);transition:opacity .55s ease,transform .55s ease}
+    .ty-1{font-size:clamp(1.25rem,3.5vw,1.55rem);color:#f0d78a}
+    .ty-2{font-size:clamp(1.05rem,3vw,1.25rem)}
+    .ty-3{font-size:clamp(.95rem,2.7vw,1.1rem);color:#d4b87a}
+    .ty-4{font-size:clamp(.95rem,2.7vw,1.1rem)}
+    .ty-5{font-size:clamp(1rem,2.9vw,1.2rem);color:#e8e0d0;margin-top:1.4rem}
+
+    /* FORMS shared */
+    .page-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(2.2rem,6.5vw,3.2rem);letter-spacing:.18em;color:var(--gold);margin-bottom:.6rem}
+    .page-subtitle{font-size:.95rem;font-weight:300;color:var(--text-muted);letter-spacing:.04em;line-height:1.7;margin-bottom:2rem;max-width:400px;text-align:center}
+    .form-box{width:100%;max-width:480px;background:rgba(255,255,255,.03);border:1px solid rgba(201,169,98,.2);border-radius:8px;padding:2rem 1.6rem;backdrop-filter:blur(10px);text-align:right}
+    .form-group{margin-bottom:1.3rem}
+    .form-group label{display:block;font-size:.82rem;color:var(--gold-soft);letter-spacing:.06em;margin-bottom:.4rem;font-weight:300}
+    .form-group input,.form-group textarea,.form-group select{width:100%;background:rgba(0,0,0,.35);border:1px solid rgba(201,169,98,.22);border-radius:6px;padding:.9rem 1rem;font-family:inherit;font-size:.95rem;color:var(--text);outline:none;transition:border-color .3s;text-align:right}
+    .form-group textarea{min-height:90px;resize:vertical}
+    .form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:rgba(201,169,98,.5);box-shadow:0 0 0 3px rgba(201,169,98,.08)}
+    .form-group select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c9a962' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:left 1rem center;padding-left:2.5rem}
+    .submit-btn{width:100%;margin-top:.6rem;padding:1.1rem;font-family:'Cormorant Garamond',serif;font-size:1.2rem;letter-spacing:.1em;color:var(--gold-soft);background:rgba(201,169,98,.1);border:1px solid rgba(201,169,98,.35);border-radius:40px;cursor:pointer;transition:all .35s}
+    .submit-btn:hover{background:rgba(201,169,98,.18);border-color:rgba(201,169,98,.6);color:#f0d78a}
+    .back-link{margin-top:1.8rem;font-size:.8rem;color:var(--text-muted);letter-spacing:.08em;cursor:pointer;opacity:.7;text-align:center}
+    .back-link:hover{opacity:1;color:var(--gold-soft)}
+
+    /* SELLER specific */
+    .file-upload{position:relative;border:1px dashed rgba(201,169,98,.3);border-radius:8px;padding:1.3rem 1rem;text-align:center;cursor:pointer;background:rgba(0,0,0,.25);transition:all .3s}
+    .file-upload:hover{border-color:rgba(201,169,98,.55);background:rgba(201,169,98,.05)}
+    .file-upload input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer}
+    .file-upload .file-text{font-size:.85rem;color:var(--text-muted);pointer-events:none}
+    .file-upload .file-name{margin-top:.4rem;font-size:.78rem;color:var(--gold-soft);display:none}
+    .tracking-box{display:none;margin-top:1.6rem;padding:1.2rem;background:rgba(201,169,98,.08);border:1px solid rgba(201,169,98,.3);border-radius:8px;text-align:center}
+    .tracking-box.show{display:block}
+    .tracking-code{font-family:'Cormorant Garamond',serif;font-size:1.5rem;letter-spacing:.15em;color:var(--gold);margin:.5rem 0}
+
+    /* BUYER PREFERENCE + RESULTS */
+    #buyer-pref,#buyer-results{justify-content:flex-start;padding-top:50px;text-align:center}
+    .pref-options{display:flex;flex-direction:column;gap:.7rem;margin-top:.5rem}
+    .pref-option{padding:.9rem 1rem;border:1px solid rgba(201,169,98,.25);border-radius:30px;background:rgba(255,255,255,.02);cursor:pointer;transition:all .3s;font-size:.95rem;color:var(--text)}
+    .pref-option.selected{border-color:rgba(201,169,98,.6);background:rgba(201,169,98,.12);color:var(--gold-soft)}
+    .recommend-card{width:100%;background:rgba(255,255,255,.03);border:1px solid rgba(201,169,98,.22);border-radius:10px;padding:1.4rem 1.3rem;margin-bottom:1rem;text-align:right;transition:border-color .3s}
+    .recommend-card:hover{border-color:rgba(201,169,98,.5)}
+    .rec-title{font-family:'Cormorant Garamond',serif;font-size:1.25rem;color:var(--gold);margin-bottom:.4rem;letter-spacing:.04em}
+    .rec-meta{font-size:.8rem;color:var(--text-muted);margin-bottom:.7rem}
+    .rec-desc{font-size:.9rem;line-height:1.7;color:var(--text);margin-bottom:1rem}
+    .rec-btn{display:inline-block;padding:.55rem 1.4rem;font-size:.85rem;border:1px solid rgba(201,169,98,.4);border-radius:30px;color:var(--gold-soft);background:transparent;cursor:pointer;transition:all .3s}
+    .rec-btn:hover{background:rgba(201,169,98,.15)}
+
+    .footer-card{position:fixed;bottom:0;left:0;right:0;padding:14px 20px 18px;text-align:center;background:linear-gradient(to top,rgba(10,10,10,.95) 60%,transparent);z-index:5;opacity:0;transition:opacity 1s}
+    .footer-card.visible{opacity:1}
+    .footer-card .name{font-family:'Cormorant Garamond',serif;font-size:.8rem;letter-spacing:.16em;color:rgba(201,169,98,.5);margin-bottom:.2rem}
+    .footer-card .details{font-size:.64rem;letter-spacing:.05em;color:rgba(154,145,126,.38);line-height:1.5}
+
+    @media(max-width:520px){
+      .corner{width:32px;height:32px}
+      .corner-tl,.corner-tr{top:16px}.corner-bl,.corner-br{bottom:16px}
+      .corner-tl,.corner-bl{left:16px}.corner-tr,.corner-br{right:16px}
+      .section{padding:30px 16px 110px}
+      .form-box{padding:1.5rem 1.2rem}
+      .role-btn{font-size:1.15rem;padding:1.05rem 1.3rem}
+    }
+  
+    
+    
+    
+    
+    
+    
+
+  
+    /* Responsive CSS Grid */
+    .explore-grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:14px;
+      width:100%;
+      max-width:960px;
+      margin:0 auto;
+      padding-bottom:20px;
+    }
+    .recommendations-grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:16px;
+      width:100%;
+      max-width:960px;
+      margin:0 auto;
+    }
+    .gallery-item{
+      position:relative;
+      aspect-ratio:1;
+      border-radius:10px;
+      overflow:hidden;
+      cursor:pointer;
+      border:1px solid rgba(201,169,98,0.15);
+      background:linear-gradient(145deg,#1a1a1a,#111);
+      transition:transform .3s ease,border-color .3s;
+    }
+    .gallery-item:hover{
+      transform:scale(1.03);
+      border-color:rgba(201,169,98,0.45);
+    }
+    .gallery-item .img-placeholder{
+      width:100%;height:100%;
+      display:flex;flex-direction:column;
+      align-items:center;justify-content:center;
+      padding:12px;text-align:center;
+    }
+    .gallery-item .item-icon{font-size:2rem;margin-bottom:8px;opacity:.7}
+    .gallery-item .item-title{
+      font-family:'Cormorant Garamond',serif;
+      font-size:.95rem;color:var(--gold-soft);
+      letter-spacing:.04em;line-height:1.4;
+    }
+    .gallery-item .item-loc{font-size:.7rem;color:var(--text-muted);margin-top:4px}
+
+    @media (min-width:640px){
+      .explore-grid{
+        grid-template-columns:repeat(2,1fr);
+        gap:16px;
+      }
+      .recommendations-grid{
+        grid-template-columns:repeat(2,1fr);
+      }
+    }
+    @media (min-width:960px){
+      .explore-grid{
+        grid-template-columns:repeat(3,1fr);
+        gap:18px;
+      }
+      .recommendations-grid{
+        grid-template-columns:repeat(3,1fr);
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="corner corner-tl"></div><div class="corner corner-tr"></div>
+  <div class="corner corner-bl"></div><div class="corner corner-br"></div>
+
+  <!-- INTRO -->
+  <div id="intro">
+    <div class="intro-symbol"><img src="icon-fa-192.png" alt="سنجاق" width="88" height="88" style="border-radius:18px;box-shadow:0 0 28px rgba(201,169,98,.25)" /></div>
+    <div class="intro-line intro-name" id="line1"></div>
+    <div class="intro-divider" id="div1"></div>
+    <div class="intro-line intro-title" id="line2"></div>
+    <div class="intro-line intro-services" id="line3"></div>
+    <div class="intro-divider" id="div2"></div>
+    <div class="intro-line intro-tagline" id="line4"></div>
+    <div class="intro-line intro-contact" id="line5"></div>
+  </div>
+
+  <!-- HOME -->
+  <div id="home" class="section">
+    <div class="symbol-top"><img src="icon-fa-192.png" alt="سنجاق" width="64" height="64" style="border-radius:14px;opacity:.95;box-shadow:0 0 20px rgba(201,169,98,.2)" /></div>
+    <div class="greeting-hi">Hi</div>
+    <div class="country-welcome" id="countryWelcome">Welcome</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:1.15rem;letter-spacing:.2em;color:#d4b87a;margin:.35rem 0 0;opacity:.9">سنجاق</div>
+    <div style="font-size:.72rem;letter-spacing:.12em;color:#9a917e;margin-top:.15rem;opacity:.7">SANJAGH</div>
+    <div class="buttons-box">
+      <button class="role-btn" onclick="goToBuyer()">خریدار</button>
+      <button class="role-btn" onclick="goToSeller()">فروشنده</button>
+      <button class="role-btn" onclick="goToVisitor()">بازدید</button>
+    </div>
+  </div>
+
+  <!-- SELLER THANK YOU -->
+  <div id="thankyou" class="section">
+    <div class="symbol-top"><img src="icon-fa-192.png" alt="سنجاق" width="64" height="64" style="border-radius:14px;opacity:.95;box-shadow:0 0 20px rgba(201,169,98,.2)" /></div>
+    <div class="ty-line ty-1" id="ty1"></div>
+    <div class="ty-line ty-2" id="ty2"></div>
+    <div class="ty-line ty-3" id="ty3"></div>
+    <div class="ty-line ty-4" id="ty4"></div>
+    <div class="ty-line ty-5" id="ty5"></div>
+  </div>
+
+  <!-- BUYER THANK YOU -->
+  <div id="buyer-thankyou" class="section">
+    <div class="symbol-top"><img src="icon-fa-192.png" alt="سنجاق" width="64" height="64" style="border-radius:14px;opacity:.95;box-shadow:0 0 20px rgba(201,169,98,.2)" /></div>
+    <div class="ty-line ty-1" id="bty1"></div>
+    <div class="ty-line ty-2" id="bty2"></div>
+    <div class="ty-line ty-3" id="bty3"></div>
+    <div class="ty-line ty-4" id="bty4"></div>
+    <div class="ty-line ty-5" id="bty5"></div>
+  </div>
+
+  <!-- BUYER PREFERENCE FORM -->
+  <div id="buyer-pref" class="section">
+    <div class="symbol-top"><img src="icon-fa-192.png" alt="سنجاق" width="64" height="64" style="border-radius:14px;opacity:.95;box-shadow:0 0 20px rgba(201,169,98,.2)" /></div>
+    <h1 class="page-title">خریدار</h1>
+    <p class="page-subtitle">لطفاً ترجیحات خود را مشخص کنید تا مناسب‌ترین فرصت‌ها را به شما پیشنهاد دهیم</p>
+
+    <div class="form-box">
+      <div class="form-group">
+        <label>دقیقاً به دنبال چه نوع دارایی هستید؟</label>
+        <input type="text" id="buyerInterest" placeholder="مثال: کارخانه MDF، خط تولید رزین، تجهیزات فولاد ..." />
+      </div>
+
+      <div class="form-group">
+        <label>ترجیح سرمایه‌گذاری شما چیست؟</label>
+        <div class="pref-options">
+          <div class="pref-option" data-value="specialty" onclick="selectPref(this)">در حوزه تخصص خودم سرمایه‌گذاری می‌کنم</div>
+          <div class="pref-option" data-value="any" onclick="selectPref(this)">هر مورد سودده قابل قبول است</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>حدود قدرت سرمایه‌گذاری (اختیاری)</label>
+        <select id="buyerBudget">
+          <option value="">انتخاب کنید</option>
+          <option value="low">کمتر از ۵۰ میلیارد تومان</option>
+          <option value="mid">۵۰ تا ۱۵۰ میلیارد تومان</option>
+          <option value="high">بیش از ۱۵۰ میلیارد تومان</option>
+          <option value="open">باز و قابل مذاکره</option>
+        </select>
+      </div>
+
+      <button class="submit-btn" onclick="showRecommendations()">دریافت پیشنهادهای هوشمند</button>
+    </div>
+    <div class="back-link" onclick="goTo('home')">بازگشت به صفحه اصلی</div>
+  </div>
+
+  <!-- BUYER RESULTS -->
+  <div id="buyer-results" class="section">
+    <div class="symbol-top"><img src="icon-fa-192.png" alt="سنجاق" width="64" height="64" style="border-radius:14px;opacity:.95;box-shadow:0 0 20px rgba(201,169,98,.2)" /></div>
+    <h1 class="page-title" style="font-size:clamp(1.8rem,5vw,2.5rem)">پیشنهادهای شما</h1>
+    <p class="page-subtitle" id="resultSubtitle">بر اساس ترجیحات شما، این موارد را پیشنهاد می‌کنیم</p>
+
+    <div id="recommendationsList" class="recommendations-grid"></div>
+
+    <div class="back-link" onclick="goTo('buyer-pref')" style="margin-top:1rem">تغییر ترجیحات</div>
+    <div class="back-link" onclick="goTo('home')">بازگشت به صفحه اصلی</div>
+  </div>
+
+  
+  <!-- VISITOR THANK YOU -->
+  <div id="visitor-thankyou" class="section">
+    <div class="symbol-top"><img src="icon-fa-192.png" alt="سنجاق" width="64" height="64" style="border-radius:14px;opacity:.95;box-shadow:0 0 20px rgba(201,169,98,.2)" /></div>
+    <div class="ty-line ty-1" id="vty1"></div>
+    <div class="ty-line ty-2" id="vty2"></div>
+    <div class="ty-line ty-3" id="vty3"></div>
+    <div class="ty-line ty-4" id="vty4"></div>
+    <div class="ty-line ty-5" id="vty5"></div>
+  </div>
+
+  <!-- VISITOR EXPLORE -->
+  <div id="visitor-explore" class="section" style="justify-content:flex-start;padding-top:40px;align-items:stretch">
+    <div style="text-align:center;margin-bottom:1.5rem;width:100%">
+      <div class="symbol-top" style="margin:0 auto 1rem"><svg viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="46" stroke="#c9a962" stroke-width="1.2"/><path d="M28 68 V32 L50 58 L72 32 V68" stroke="#c9a962" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/><line x1="38" y1="50" x2="62" y2="50" stroke="#c9a962" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+      <h1 class="page-title" style="font-size:clamp(1.8rem,5vw,2.6rem)">اکسپلور</h1>
+      <p class="page-subtitle" style="margin-bottom:0.5rem">تمام فرصت‌های موجود را مشاهده کنید</p>
+    </div>
+    <div id="exploreGrid" class="explore-grid"></div>
+    <div class="back-link" onclick="goTo('home')" style="text-align:center;margin-top:1.5rem">بازگشت به صفحه اصلی</div>
+  </div>
+
+  <!-- DETAIL MODAL -->
+  <div id="detailModal" style="position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:200;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px)">
+    <div style="background:#111;border:1px solid rgba(201,169,98,0.3);border-radius:12px;max-width:480px;width:100%;padding:1.8rem 1.5rem;text-align:right;position:relative;max-height:90vh;overflow-y:auto">
+      <button onclick="closeDetail()" style="position:absolute;top:12px;left:14px;background:none;border:none;color:#9a917e;font-size:1.4rem;cursor:pointer">×</button>
+      <div id="detailTitle" style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:#c9a962;margin-bottom:.6rem;letter-spacing:.06em"></div>
+      <div id="detailMeta" style="font-size:.85rem;color:#9a917e;margin-bottom:1.2rem;line-height:1.6"></div>
+      <div id="detailDesc" style="font-size:.95rem;line-height:1.8;color:#e8e0d0;margin-bottom:1.5rem"></div>
+      <button onclick="alert('برای هماهنگی بازدید و دریافت اطلاعات کامل با واتساپ تماس بگیرید:\n+98 914 914 2761')" style="width:100%;padding:1rem;font-family:'Cormorant Garamond',serif;font-size:1.15rem;letter-spacing:.1em;color:#d4b87a;background:rgba(201,169,98,0.12);border:1px solid rgba(201,169,98,0.4);border-radius:40px;cursor:pointer">درخواست اطلاعات بیشتر</button>
+    </div>
+  </div>
+
+  <!-- SELLER FORM -->
+  <div id="seller" class="section">
+    <div class="symbol-top"><img src="icon-fa-192.png" alt="سنجاق" width="64" height="64" style="border-radius:14px;opacity:.95;box-shadow:0 0 20px rgba(201,169,98,.2)" /></div>
+    <h1 class="page-title">فروشنده</h1>
+    <p class="page-subtitle">دارایی صنعتی خود را با ما به سرمایه‌گذاران جهانی متصل کنید</p>
+    <div class="form-box" id="formBox">
+      <div class="form-group"><label>نوع دارایی</label><input type="text" id="assetType" placeholder="مثال: کارخانه MDF، خط تولید رزین ..." /></div>
+      <div class="form-group"><label>عنوان دارایی</label><input type="text" id="assetTitle" placeholder="عنوان واضح برای دارایی" /></div>
+      <div class="form-group"><label>موقعیت مکانی</label><input type="text" id="location" placeholder="شهر / منطقه / استان / کشور" /></div>
+      <div class="form-group"><label>توضیحات تکمیلی</label><textarea id="description" placeholder="توضیحات کامل ..."></textarea></div>
+      <div class="form-group"><label>شماره تماس یا واتساپ</label><input type="text" id="contact" placeholder="+98 9xx xxx xxxx" /></div>
+      <div class="form-group"><label>آپلود عکس</label><div class="file-upload"><input type="file" id="photos" accept="image/*" multiple /><div class="file-text">برای انتخاب عکس کلیک کنید</div><div class="file-name" id="photoNames"></div></div></div>
+      <div class="form-group"><label>آپلود ویدیو (اختیاری)</label><div class="file-upload"><input type="file" id="videos" accept="video/*" multiple /><div class="file-text">برای انتخاب ویدیو کلیک کنید</div><div class="file-name" id="videoNames"></div></div></div>
+      <button class="submit-btn" id="submitBtn">ارسال اطلاعات</button>
+    </div>
+    <div class="tracking-box" id="trackingBox"><div style="font-size:0.9rem;color:var(--text-muted)">کد پیگیری شما</div><div class="tracking-code" id="trackingCode"></div><div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.4rem">این کد را نزد خود نگه دارید</div></div>
+    <div class="back-link" onclick="goTo('home')">بازگشت به صفحه اصلی</div>
+  </div>
+
+  <div class="footer-card" id="footerCard">
+    <div class="name">ALI MESBAHI</div>
+    <div class="details">Industrial Asset Broker • B2B Consultant<br>WhatsApp: +98 914 914 2761  ·  alinano91@yahoo.com</div>
+  </div>
+
+  <script>
+    // Sample assets
+    const assets = [
+      {id:1, title:"کارخانه MDF ظرفیت بالا", loc:"منطقه آزاد ارس", type:"MDF", budget:"high", desc:"کارخانه تولید MDF با ظرفیت روزانه ۸۰ متر مکعب، خطوط پرس مدرن و سیستم خشک‌کن پیشرفته. آماده واگذاری کامل."},
+      {id:2, title:"خط تولید رزین صنعتی", loc:"تبریز", type:"Resin", budget:"mid", desc:"خط کامل تولید رزین اوره فرمالدئید با ظرفیت ماهانه ۴۰۰ تن. تجهیزات اروپایی و وضعیت عالی."},
+      {id:3, title:"تجهیزات ذوب فولاد", loc:"ارومیه", type:"Steel", budget:"high", desc:"مجموعه کامل کوره القایی و تجهیزات ذوب و ریخته‌گری فولاد. مناسب سرمایه‌گذاری در صنعت فلزات."},
+      {id:4, title:"کارخانه کاغذ دکور", loc:"ماکو", type:"Decor Paper", budget:"mid", desc:"خط تولید کاغذ دکوراتیو با عرض ۱۶۰۰ میلی‌متر. قابلیت چاپ طرح‌های متنوع و کیفیت صادراتی."},
+      {id:5, title:"کارخانه MDF + ملامینه", loc:"منطقه آزاد ارس", type:"MDF", budget:"high", desc:"مجتمع کامل تولید MDF و روکش ملامینه. شامل انبار مواد اولیه و محصول نهایی."},
+      {id:6, title:"خط تولید رزین فنولیک", loc:"خوی", type:"Resin", budget:"low", desc:"تجهیزات تولید رزین فنولیک صنعتی با سیستم کنترل اتوماتیک. مناسب صنایع چوب و کامپوزیت."},
+      {id:7, title:"کارخانه فولاد نوردی", loc:"مراغه", type:"Steel", budget:"high", desc:"خط نورد گرم و سرد فولاد با ظرفیت سالانه ۵۰ هزار تن. زمین و سوله متعلق به مجموعه."},
+      {id:8, title:"مجتمع تولید کاغذ دکور", loc:"تبریز", type:"Decor Paper", budget:"mid", desc:"کارخانه کامل تولید و چاپ کاغذ دکور با سه خط چاپ گراور. امکان صادرات به کشورهای همسایه."}
+    ];
+
+    let selectedPref = null;
+
+    function selectPref(el){
+      document.querySelectorAll('.pref-option').forEach(o=>o.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedPref = el.dataset.value;
+    }
+
+    function showRecommendations(){
+      const interest = document.getElementById('buyerInterest').value.trim().toLowerCase();
+      const budget = document.getElementById('buyerBudget').value;
+
+      let filtered = [...assets];
+
+      // Filter by interest keywords
+      if(interest){
+        filtered = filtered.filter(a => 
+          a.title.toLowerCase().includes(interest) || 
+          a.type.toLowerCase().includes(interest) ||
+          a.desc.toLowerCase().includes(interest) ||
+          (interest.includes('mdf') && a.type==='MDF') ||
+          (interest.includes('رزین') && a.type==='Resin') ||
+          (interest.includes('فولاد') && a.type==='Steel') ||
+          (interest.includes('کاغذ') && a.type==='Decor Paper')
+        );
+      }
+
+      // Filter by budget if selected
+      if(budget && budget !== 'open'){
+        filtered = filtered.filter(a => a.budget === budget || a.budget === 'mid');
+      }
+
+      // If specialty preferred and no strong match, keep original filtered
+      // If still empty, show top 3
+      if(filtered.length === 0) filtered = assets.slice(0,3);
+      else filtered = filtered.slice(0,3);
+
+      // Render
+      const list = document.getElementById('recommendationsList');
+      list.innerHTML = filtered.map(a => `
+        <div class="recommend-card">
+          <div class="rec-title">${a.title}</div>
+          <div class="rec-meta">${a.type}  ·  ${a.loc}</div>
+          <div class="rec-desc">${a.desc}</div>
+          <button class="rec-btn" onclick="alert('برای دریافت اطلاعات کامل و هماهنگی بازدید، با واتساپ یا ایمیل تماس بگیرید:\\n+98 914 914 2761')">درخواست اطلاعات بیشتر</button>
+        </div>
+      `).join('');
+
+      document.getElementById('resultSubtitle').textContent = 
+        filtered.length + ' مورد متناسب با ترجیحات شما پیدا شد';
+
+      showSection('buyer-results');
+    }
+
+    // INTRO
+    const introLines=[{id:"line1",text:"ALI MESBAHI",delay:400,speed:55},{id:"div1",isDivider:true,delay:300},{id:"line2",text:"Industrial Asset Broker  •  B2B Consultant",delay:500,speed:32},{id:"line3",text:"MDF  |  Resin  |  Decor Paper  |  Steel & Melting Facilities",delay:450,speed:28},{id:"div2",isDivider:true,delay:300},{id:"line4",text:"Connecting Global Investors — Northwest Iran & Aras Free Trade Zone",delay:500,speed:26},{id:"line5",text:"WhatsApp: +98 914 914 2761    Email: alinano91@yahoo.com",delay:450,speed:28}];
+    function typeWriter(el,text,speed=38){return new Promise(r=>{let i=0;el.textContent="";el.classList.add("visible");(function t(){if(i<text.length){el.textContent+=text.charAt(i);i++;setTimeout(t,speed)}else r()})()})}
+    async function runIntro(){for(const item of introLines){await new Promise(r=>setTimeout(r,item.delay));const el=document.getElementById(item.id);if(item.isDivider)el.classList.add("visible");else await typeWriter(el,item.text,item.speed)}await new Promise(r=>setTimeout(r,1800));document.getElementById("intro").classList.add("hidden");showSection("home");document.getElementById("footerCard").classList.add("visible")}
+    runIntro();
+
+    function showSection(id){document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));document.getElementById(id).classList.add("active");window.scrollTo(0,0)}
+    function goTo(id){showSection(id)}
+
+    // SELLER
+    function goToSeller(){showSection("thankyou");runThankYou()}
+    const tyLines=[{id:"ty1",text:"با تشکر از حسن انتخاب جنابعالی",delay:500,speed:40},{id:"ty2",text:"از اینکه تیم ما را انتخاب کردید، نهایت سپاس و قدردانی را داریم.",delay:450,speed:26},{id:"ty3",text:"به شما اطمینان می‌دهیم تمامی اطلاعات شخصی‌تان اعم از شماره تماس، ایمیل، اسرار شغلی و سایر موارد مهم را به طور کامل پاسداری می‌کنیم.",delay:400,speed:22},{id:"ty4",text:"تا پایان پروژه فروش، به صورت حرفه‌ای در کنارتان خواهیم بود.",delay:350,speed:26},{id:"ty5",text:"با آرزوی موفقیت و بهترین‌ها",delay:450,speed:38}];
+    async function runThankYou(){tyLines.forEach(l=>{const el=document.getElementById(l.id);el.textContent="";el.classList.remove("visible")});for(const item of tyLines){await new Promise(r=>setTimeout(r,item.delay));await typeWriter(document.getElementById(item.id),item.text,item.speed)}await new Promise(r=>setTimeout(r,2800));showSection("seller")}
+
+    // BUYER
+    
+    // VISITOR
+    function goToVisitor(){showSection("visitor-thankyou");runVisitorThankYou()}
+    const vtyLines=[{id:"vty1",text:"با تشکر از حسن انتخاب جنابعالی",delay:500,speed:40},{id:"vty2",text:"از اینکه وقت خود را برای آشنایی با فرصت‌های ما اختصاص دادید سپاسگزاریم.",delay:450,speed:26},{id:"vty3",text:"در ادامه می‌توانید تمام دارایی‌های موجود را مشاهده کنید.",delay:400,speed:24},{id:"vty4",text:"با آرامش اسکرول کنید و در صورت علاقه، اطلاعات بیشتری دریافت کنید.",delay:350,speed:26},{id:"vty5",text:"با آرزوی لحظات خوب",delay:450,speed:38}];
+    async function runVisitorThankYou(){vtyLines.forEach(l=>{const el=document.getElementById(l.id);if(el){el.textContent="";el.classList.remove("visible")}});for(const item of vtyLines){await new Promise(r=>setTimeout(r,item.delay));await typeWriter(document.getElementById(item.id),item.text,item.speed)}await new Promise(r=>setTimeout(r,2400));renderExplore();showSection("visitor-explore")}
+    function renderExplore(){const grid=document.getElementById("exploreGrid");if(!grid)return;grid.innerHTML=assets.map(a=>`<div class="gallery-item" onclick="openDetail(${a.id})"><div class="img-placeholder"><div class="item-icon">${a.type==="MDF"?"🏭":a.type==="Resin"?"🧪":a.type==="Steel"?"⚙️":"📄"}</div><div class="item-title">${a.title}</div><div class="item-loc">${a.loc}</div></div></div>`).join("")}
+    function openDetail(id){const a=assets.find(x=>x.id===id);if(!a)return;document.getElementById("detailTitle").textContent=a.title;document.getElementById("detailMeta").textContent=a.type+"  ·  "+a.loc;document.getElementById("detailDesc").textContent=a.desc;document.getElementById("detailModal").style.display="flex"}
+    function closeDetail(){document.getElementById("detailModal").style.display="none"}
+
+    function goToBuyer(){showSection("buyer-thankyou");runBuyerThankYou()}
+    const btyLines=[{id:"bty1",text:"با تشکر از حسن انتخاب جنابعالی",delay:500,speed:40},{id:"bty2",text:"از اینکه تیم ما را برای یافتن فرصت‌های سرمایه‌گذاری انتخاب کردید سپاسگزاریم.",delay:450,speed:26},{id:"bty3",text:"برای ارائه پیشنهادهای دقیق‌تر، چند سؤال کوتاه از شما می‌پرسیم.",delay:400,speed:24},{id:"bty4",text:"پاسخ‌های شما کاملاً محرمانه باقی می‌ماند.",delay:350,speed:28},{id:"bty5",text:"با آرزوی سرمایه‌گذاری موفق",delay:450,speed:38}];
+    async function runBuyerThankYou(){btyLines.forEach(l=>{const el=document.getElementById(l.id);el.textContent="";el.classList.remove("visible")});for(const item of btyLines){await new Promise(r=>setTimeout(r,item.delay));await typeWriter(document.getElementById(item.id),item.text,item.speed)}await new Promise(r=>setTimeout(r,2600));showSection("buyer-pref")}
+
+    // Country
+    const greetings={IR:"خوش آمدید",TR:"Hoş geldiniz",AE:"أهلاً وسهلاً",CN:"欢迎",RU:"Добро пожаловать",DE:"Willkommen",FR:"Bienvenue",GB:"Welcome",US:"Welcome",PK:"خوش آمدید",AZ:"Xoş gəlmisiniz"};
+    async function detectCountry(){try{const res=await fetch("https://ipapi.co/json/");if(!res.ok)throw 0;const d=await res.json();document.getElementById("countryWelcome").textContent=greetings[d.country_code]||"Welcome"}catch(e){document.getElementById("countryWelcome").textContent="Welcome"}}
+    detectCountry();
+
+    // Seller form helpers
+    document.getElementById("photos").addEventListener("change",function(){const names=Array.from(this.files).map(f=>f.name).join("، ");const el=document.getElementById("photoNames");if(names){el.textContent=names;el.style.display="block"}else el.style.display="none"});
+    document.getElementById("videos").addEventListener("change",function(){const names=Array.from(this.files).map(f=>f.name).join("، ");const el=document.getElementById("videoNames");if(names){el.textContent=names;el.style.display="block"}else el.style.display="none"});
+    function generateCode(){const d=new Date();return `AM-${d.getFullYear().toString().slice(-2)}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}-${Math.floor(1000+Math.random()*9000)}`}
+    document.getElementById("submitBtn").addEventListener("click",function(){const type=document.getElementById("assetType").value.trim();const title=document.getElementById("assetTitle").value.trim();const contact=document.getElementById("contact").value.trim();if(!type||!title||!contact){alert("لطفاً حداقل نوع دارایی، عنوان و شماره تماس را وارد کنید.");return}const code=generateCode();this.style.background="rgba(201,169,98,0.25)";this.textContent="در حال ثبت...";setTimeout(()=>{document.getElementById("trackingCode").textContent=code;document.getElementById("trackingBox").classList.add("show");document.getElementById("formBox").style.opacity="0.45";document.getElementById("formBox").style.pointerEvents="none";this.textContent="ثبت شد";alert("اطلاعات شما با موفقیت ثبت شد.\nکد پیگیری شما: "+code)},700)});
+  </script>
+</body>
+</html>
