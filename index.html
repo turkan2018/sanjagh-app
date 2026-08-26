@@ -449,7 +449,94 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_
     document.getElementById("photos").addEventListener("change",function(){const names=Array.from(this.files).map(f=>f.name).join("، ");const el=document.getElementById("photoNames");if(names){el.textContent=names;el.style.display="block"}else el.style.display="none"});
     document.getElementById("videos").addEventListener("change",function(){const names=Array.from(this.files).map(f=>f.name).join("، ");const el=document.getElementById("videoNames");if(names){el.textContent=names;el.style.display="block"}else el.style.display="none"});
     function generateCode(){const d=new Date();return `AM-${d.getFullYear().toString().slice(-2)}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}-${Math.floor(1000+Math.random()*9000)}`}
-    document.getElementById("submitBtn").addEventListener("click",function(){const type=document.getElementById("assetType").value.trim();const title=document.getElementById("assetTitle").value.trim();const contact=document.getElementById("contact").value.trim();if(!type||!title||!contact){alert("لطفاً حداقل نوع دارایی، عنوان و شماره تماس را وارد کنید.");return}const code=generateCode();this.style.background="rgba(201,169,98,0.25)";this.textContent="در حال ثبت...";setTimeout(()=>{document.getElementById("trackingCode").textContent=code;document.getElementById("trackingBox").classList.add("show");document.getElementById("formBox").style.opacity="0.45";document.getElementById("formBox").style.pointerEvents="none";this.textContent="ثبت شد";alert("اطلاعات شما با موفقیت ثبت شد.\nکد پیگیری شما: "+code)},700)});
+    function generateCode(){
+  const d = new Date();
+  const y = String(d.getFullYear()).slice(-2);
+  const m = String(d.getMonth()+1).padStart(2,"0");
+  const day = String(d.getDate()).padStart(2,"0");
+  const n = Math.floor(1000 + Math.random()*9000);
+  return "SG-" + y + m + day + "-" + n;
+}
+
+document.getElementById("submitBtn").addEventListener("click", async function(){
+  const type = document.getElementById("assetType").value.trim();
+  const title = document.getElementById("assetTitle").value.trim();
+  const location = document.getElementById("location").value.trim();
+  const description = document.getElementById("description").value.trim();
+  const contact = document.getElementById("contact").value.trim();
+  const photoInput = document.getElementById("photos");
+  const videoInput = document.getElementById("videos");
+
+  if(!type || !title || !contact){
+    alert("لطفاً حداقل نوع دارایی، عنوان و شماره تماس را وارد کنید.");
+    return;
+  }
+
+  const btn = this;
+  btn.disabled = true;
+  btn.style.background = "rgba(201,169,98,0.25)";
+  btn.textContent = "در حال ثبت...";
+
+  try {
+    const code = generateCode();
+    const { data: listing, error } = await supabaseClient
+      .from("listings")
+      .insert({
+        tracking_code: code,
+        asset_type: type,
+        title: title,
+        location: location || null,
+        description: description || null,
+        contact_override: contact,
+        status: "pending",
+        raw_notes: description || null
+      })
+      .select()
+      .single();
+
+    if(error) throw error;
+
+    const files = [];
+    if(photoInput && photoInput.files) files.push(...photoInput.files);
+    if(videoInput && videoInput.files) files.push(...videoInput.files);
+
+    for(let i = 0; i < files.length; i++){
+      const file = files[i];
+      const isVideo = (file.type || "").indexOf("video/") === 0;
+      const safeName = (file.name || "file").replace(/\s+/g, "_");
+      const path = listing.id + "/" + Date.now() + "-" + i + "-" + safeName;
+
+      const { error: upErr } = await supabaseClient.storage
+        .from("listing-media")
+        .upload(path, file, { upsert: false });
+
+      if(upErr){ console.warn(upErr); continue; }
+
+      const { data: pub } = supabaseClient.storage.from("listing-media").getPublicUrl(path);
+
+      await supabaseClient.from("listing_media").insert({
+        listing_id: listing.id,
+        kind: isVideo ? "video" : "image",
+        file_url: pub.publicUrl,
+        storage_path: path,
+        sort_order: i
+      });
+    }
+
+    document.getElementById("trackingCode").textContent = code;
+    document.getElementById("trackingBox").classList.add("show");
+    document.getElementById("formBox").style.opacity = "0.45";
+    document.getElementById("formBox").style.pointerEvents = "none";
+    btn.textContent = "ثبت شد";
+    alert("ثبت در سرور انجام شد.\nکد پیگیری: " + code);
+  } catch(e){
+    console.error(e);
+    alert("خطا در ثبت: " + (e.message || "دوباره تلاش کنید"));
+    btn.disabled = false;
+    btn.textContent = "ارسال اطلاعات";
+    btn.style.background = "";
+  }
+});
   </script>
 </body>
 </html>
