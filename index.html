@@ -342,6 +342,9 @@
   </div>
 
   <script>
+const SUPABASE_URL = "https://kpmlkzocinkbnlwiivlr.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_JY6ZPWNyCb6o4H__Y72pvA_oNBAIpbZ";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     // Sample assets
     const assets = [
       {id:1, title:"کارخانه MDF ظرفیت بالا", loc:"منطقه آزاد ارس", type:"MDF", budget:"high", desc:"کارخانه تولید MDF با ظرفیت روزانه ۸۰ متر مکعب، خطوط پرس مدرن و سیستم خشک‌کن پیشرفته. آماده واگذاری کامل."},
