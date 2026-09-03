@@ -1,0 +1,12 @@
+# Local secrets / environment files
+.env
+.env.*
+!.env.example
+
+# Local tooling
+node_modules/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
