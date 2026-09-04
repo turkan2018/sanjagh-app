@@ -1,0 +1,15 @@
+{
+  "name": "sanjagh-backend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Backend API for Sanjagh industrial real-estate platform",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
+  }
+}
